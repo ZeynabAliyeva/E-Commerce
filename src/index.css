@@ -1,0 +1,7 @@
+li{
+    list-style-type: none
+}
+.carousel .thumb.selected,
+.carousel .thumb:hover {
+	border: 2px solid hsl(26, 100%, 55%) !important;
+}
