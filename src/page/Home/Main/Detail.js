@@ -37,6 +37,8 @@ function Detail({count,setCount,items,setItems,openCard,setOpenCard}) {
             onClick={()=>{
               if(count === 0 ){
               }else{
+                setItems([...items,count])
+                setCount(0)
                 setOpenCard(true)
               }
             }}

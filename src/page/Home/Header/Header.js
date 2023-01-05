@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Container,
@@ -9,9 +9,6 @@ import {
   CardFooter,
   CardHeader,
   Button,
-  MenuDescendantsProvider,
-  HStack,
-  VStack,
   Link,
 } from "@chakra-ui/react";
 import { UnorderedList, ListItem, Flex } from "@chakra-ui/react";
@@ -25,7 +22,15 @@ import burger from "../images/icon-menu.svg";
 import burgerClose from "../images/icon-close.svg";
 
 function Header({ count, items, setItems, openCard, setOpenCard }) {
-  console.log(openCard);
+
+  const deleteItem = (item) => {
+    let filteredData = items.filter((q) => q !== item);
+    setItems(filteredData);
+  };
+  if (items.length === 0) {
+    setOpenCard(false);
+  }
+  console.log(items);
   const [display, setDisplay] = useState("none");
   return (
     <Container mt="40px" maxW="container.xl">
@@ -207,10 +212,10 @@ function Header({ count, items, setItems, openCard, setOpenCard }) {
               boxSize="48px"
               src={avatar}
               alt="this is photo"
-			   _hover={{
-                  cursor: "pointer",
-                  border: "2.5px solid orange",
-                }}
+              _hover={{
+                cursor: "pointer",
+                border: "2.5px solid orange",
+              }}
             />
             {openCard && (
               <Card align="center">
@@ -218,33 +223,37 @@ function Header({ count, items, setItems, openCard, setOpenCard }) {
                   <Heading size="md"> Cart</Heading>
                   <Divider w="200px" />
                 </CardHeader>
-                <CardBody>
-                  <Box position={"relative"} p={5}>
-                    <Flex>
-                      <Image
-                        borderRadius={"10px"}
-                        boxSize={"70px"}
-                        src={img1}
-                      />
-                      <Flex ml="10px" flexDirection={"column"}>
-                        <Text> Fall Limited Edition Sneakers</Text>
+                {items && items.map((element, i) => (
+                    <CardBody key={i}>
+                      <Box position={"relative"} p={5}>
+                        <Flex>
+                          <Image
+                            value={i}
+                            borderRadius={"10px"}
+                            boxSize={"70px"}
+                            src={img1}
+                          />
+                          <Flex ml="10px" flexDirection={"column"}>
+                            <Text> Fall Limited Edition Sneakers</Text>
 
-                        <Text as={"span"}>{`${count} *  $125`}</Text>
-                        <Text fontWeight={700}>{`$${count * 125}`}</Text>
-                      </Flex>
-                      <Image
-                        position="relative"
-                        top="15px"
-                        ml="10px"
-                        cursor={"pointer"}
-                        src={trash}
-                        h="18px"
-                        w="12px"
-                        display="inline-block"
-                      />
-                    </Flex>
-                  </Box>
-                </CardBody>
+                            <Text as={"span"}>$125.00 x {element}</Text>
+                            <Text fontWeight={700}>${element * 125}</Text>
+                          </Flex>
+                          <Image
+                            position="relative"
+                            top="15px"
+                            ml="10px"
+                            cursor={"pointer"}
+                            src={trash}
+                            h="18px"
+                            w="12px"
+                            display="inline-block"
+                            onClick={()=>deleteItem(element)}
+                          />
+                        </Flex>
+                      </Box>
+                    </CardBody>
+                  ))}
                 <CardFooter>
                   <Button
                     p={"15px 40px"}
